@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model & Workflow — CardioAI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+      <span class="logo-text">Cardio<strong>AI</strong></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link"><i class="fa-solid fa-house-medical"></i> Home</a></li>
+      <li><a href="/model" class="nav-link active"><i class="fa-solid fa-brain"></i> Model</a></li>
+      <li><a href="/about" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ── PAGE HERO ── -->
+<section class="page-hero">
+  <div class="page-hero-blob"></div>
+  <div class="container">
+    <div class="page-hero-badge"><i class="fa-solid fa-diagram-project"></i> Architecture</div>
+    <h1 class="page-hero-title">Model &amp; Workflow</h1>
+    <p class="page-hero-desc">Understand how CardioAI ingests raw health claims and returns evidence-backed verdicts using a fine-tuned BioBERT transformer.</p>
+  </div>
+</section>
+
+<!-- ── PIPELINE VISUAL ── -->
+<section class="pipeline-section">
+  <div class="container">
+    <div class="section-label">
+      <i class="fa-solid fa-route"></i> End-to-End Pipeline
+    </div>
+    <h2 class="section-title">From Claim to Verdict</h2>
+
+    <div class="pipeline-steps">
+      <div class="pipeline-step" style="--delay:0s">
+        <div class="step-number">01</div>
+        <div class="step-icon teal"><i class="fa-solid fa-keyboard"></i></div>
+        <h3>Input</h3>
+        <p>User submits a claim via text or voice (Web Speech API)</p>
+      </div>
+      <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+      <div class="pipeline-step" style="--delay:.1s">
+        <div class="step-number">02</div>
+        <div class="step-icon blue"><i class="fa-solid fa-broom"></i></div>
+        <h3>Preprocess</h3>
+        <p>Lowercasing, stop-word removal, BioBERT tokenization</p>
+      </div>
+      <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+      <div class="pipeline-step" style="--delay:.2s">
+        <div class="step-number">03</div>
+        <div class="step-icon purple"><i class="fa-solid fa-brain"></i></div>
+        <h3>BioBERT</h3>
+        <p>Fine-tuned biomedical BERT produces contextual embeddings</p>
+      </div>
+      <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+      <div class="pipeline-step" style="--delay:.3s">
+        <div class="step-number">04</div>
+        <div class="step-icon orange"><i class="fa-solid fa-code-branch"></i></div>
+        <h3>Classify</h3>
+        <p>Softmax classifier outputs True / False / Uncertain + confidence</p>
+      </div>
+      <div class="pipeline-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+
+      <div class="pipeline-step" style="--delay:.4s">
+        <div class="step-number">05</div>
+        <div class="step-icon green"><i class="fa-solid fa-circle-check"></i></div>
+        <h3>Verdict</h3>
+        <p>Result + explanation returned to UI via Flask REST API</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DATASET CARD ── -->
+<section class="cards-section">
+  <div class="container">
+    <div class="section-label"><i class="fa-solid fa-database"></i> Data</div>
+    <h2 class="section-title">Dataset</h2>
+    <div class="info-grid">
+
+      <div class="info-card dataset-card">
+        <div class="info-card-icon teal"><i class="fa-solid fa-table"></i></div>
+        <h3>Cardio-Only CSV Dataset</h3>
+        <p>A curated dataset of cardiovascular health claims scraped from medical literature, PubMed abstracts, and clinical guidelines — then hand-labeled by domain.</p>
+        <div class="dataset-stats">
+          <div class="ds-stat">
+            <span class="ds-num">~2,400</span>
+            <span class="ds-label">Total Samples</span>
+          </div>
+          <div class="ds-stat">
+            <span class="ds-num">3</span>
+            <span class="ds-label">Classes</span>
+          </div>
+          <div class="ds-stat">
+            <span class="ds-num">CSV</span>
+            <span class="ds-label">Format</span>
+          </div>
+        </div>
+        <div class="label-pills">
+          <span class="label-pill true-pill"><i class="fa-solid fa-check"></i> True</span>
+          <span class="label-pill false-pill"><i class="fa-solid fa-xmark"></i> False</span>
+          <span class="label-pill uncertain-pill"><i class="fa-solid fa-circle-question"></i> Uncertain</span>
+        </div>
+        <div class="code-block">
+          <span class="code-comment"># Sample CSV rows</span>
+          <span>text,label</span>
+          <span>"Regular exercise reduces heart disease risk.",true</span>
+          <span>"Coffee causes heart attacks.",false</span>
+          <span>"Low-dose aspirin may prevent strokes.",uncertain</span>
+        </div>
+      </div>
+
+      <!-- Preprocessing -->
+      <div class="info-card preprocess-card">
+        <div class="info-card-icon blue"><i class="fa-solid fa-filter"></i></div>
+        <h3>Preprocessing Pipeline</h3>
+        <p>Raw text goes through several NLP cleaning steps before tokenization.</p>
+        <ul class="step-list">
+          <li><i class="fa-solid fa-circle-check teal-text"></i> Lowercase normalization</li>
+          <li><i class="fa-solid fa-circle-check teal-text"></i> Remove HTML tags &amp; special characters</li>
+          <li><i class="fa-solid fa-circle-check teal-text"></i> Expand medical abbreviations</li>
+          <li><i class="fa-solid fa-circle-check teal-text"></i> Sentence tokenization (NLTK)</li>
+          <li><i class="fa-solid fa-circle-check teal-text"></i> BioBERT WordPiece tokenization</li>
+          <li><i class="fa-solid fa-circle-check teal-text"></i> Padding / truncation to 512 tokens</li>
+          <li><i class="fa-solid fa-circle-check teal-text"></i> Attention mask generation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BIOBERT EXPLANATION ── -->
+<section class="biobert-section">
+  <div class="container">
+    <div class="section-label"><i class="fa-solid fa-robot"></i> Model</div>
+    <h2 class="section-title">BioBERT Architecture</h2>
+
+    <div class="biobert-grid">
+      <div class="biobert-visual">
+        <div class="bert-diagram">
+          <div class="bert-layer input-layer">
+            <span><i class="fa-solid fa-font"></i> Token Embeddings</span>
+            <span><i class="fa-solid fa-hashtag"></i> Position Embeddings</span>
+            <span><i class="fa-solid fa-layer-group"></i> Segment Embeddings</span>
+          </div>
+          <div class="bert-arrow-row">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+          <div class="bert-layer encoder-layers">
+            <span class="encoder-label">Transformer Encoder × 12</span>
+            <div class="encoder-blocks">
+              <div class="enc-block">Multi-Head<br/>Attention</div>
+              <div class="enc-block">Feed<br/>Forward</div>
+              <div class="enc-block">Layer<br/>Norm</div>
+            </div>
+          </div>
+          <div class="bert-arrow-row">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+          <div class="bert-layer cls-layer">
+            <span><i class="fa-solid fa-vector-square"></i> [CLS] Vector → Dropout → Dense(3)</span>
+          </div>
+          <div class="bert-arrow-row">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+          <div class="bert-layer output-layer">
+            <div class="out-pill true-out">True</div>
+            <div class="out-pill false-out">False</div>
+            <div class="out-pill uncertain-out">Uncertain</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="biobert-info">
+        <div class="biobert-card">
+          <i class="fa-solid fa-cube blue-text"></i>
+          <h4>Pre-trained on PubMed</h4>
+          <p>BioBERT is initialized on 18B+ words from PubMed abstracts and PubMed Central full-text articles, giving it deep biomedical vocabulary understanding.</p>
+        </div>
+        <div class="biobert-card">
+          <i class="fa-solid fa-dna teal-text"></i>
+          <h4>Fine-tuned for Cardiology</h4>
+          <p>We further fine-tune the model on our cardio-specific dataset for 5 epochs, adjusting the [CLS] classification head to output 3-class predictions.</p>
+        </div>
+        <div class="biobert-card">
+          <i class="fa-brands fa-python purple-text"></i>
+          <h4>HuggingFace Transformers</h4>
+          <p>Implemented using <code>dmis-lab/biobert-base-cased-v1.2</code> from the HuggingFace Model Hub via the <code>transformers</code> library.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRAINING PIPELINE ── -->
+<section class="training-section">
+  <div class="container">
+    <div class="section-label"><i class="fa-solid fa-graduation-cap"></i> Training</div>
+    <h2 class="section-title">Training Pipeline</h2>
+    <div class="training-grid">
+
+      <div class="training-step">
+        <div class="ts-icon"><i class="fa-solid fa-arrow-up-from-bracket"></i></div>
+        <h4>1. Load Dataset</h4>
+        <p>Read CSV → split 80/10/10 for train, validation, test sets.</p>
+      </div>
+      <div class="training-step">
+        <div class="ts-icon"><i class="fa-solid fa-scissors"></i></div>
+        <h4>2. Tokenize</h4>
+        <p>BioBERT tokenizer with max_length=256 and dynamic padding.</p>
+      </div>
+      <div class="training-step">
+        <div class="ts-icon"><i class="fa-solid fa-fire"></i></div>
+        <h4>3. Fine-Tune</h4>
+        <p>5 epochs, AdamW optimizer (lr=2e-5), batch size 16, linear warmup.</p>
+      </div>
+      <div class="training-step">
+        <div class="ts-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h4>4. Evaluate</h4>
+        <p>Accuracy, F1-macro, precision, recall on held-out test set.</p>
+      </div>
+      <div class="training-step">
+        <div class="ts-icon"><i class="fa-solid fa-floppy-disk"></i></div>
+        <h4>5. Save Model</h4>
+        <p>Best checkpoint saved via <code>save_pretrained()</code> for inference.</p>
+      </div>
+      <div class="training-step">
+        <div class="ts-icon"><i class="fa-solid fa-flask"></i></div>
+        <h4>6. Serve via Flask</h4>
+        <p>Model loaded at startup; predictions served over <code>/api/predict</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TECH STACK ── -->
+<section class="tech-section">
+  <div class="container">
+    <div class="section-label"><i class="fa-solid fa-layer-group"></i> Stack</div>
+    <h2 class="section-title">Technology Stack</h2>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <i class="fa-brands fa-python"></i>
+        <span>Python 3.10+</span>
+      </div>
+      <div class="tech-card">
+        <i class="fa-solid fa-flask"></i>
+        <span>Flask</span>
+      </div>
+      <div class="tech-card">
+        <i class="fa-solid fa-brain"></i>
+        <span>BioBERT</span>
+      </div>
+      <div class="tech-card">
+        <i class="fa-solid fa-fire-flame-curved"></i>
+        <span>PyTorch</span>
+      </div>
+      <div class="tech-card">
+        <i class="fa-solid fa-code"></i>
+        <span>HuggingFace</span>
+      </div>
+      <div class="tech-card">
+        <i class="fa-brands fa-html5"></i>
+        <span>HTML / CSS / JS</span>
+      </div>
+      <div class="tech-card">
+        <i class="fa-solid fa-microphone"></i>
+        <span>Web Speech API</span>
+      </div>
+      <div class="tech-card">
+        <i class="fa-solid fa-table"></i>
+        <span>Pandas / Scikit-learn</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+        <span class="logo-text">Cardio<strong>AI</strong></span>
+        <p>AI-powered cardiovascular claim verification.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Pages</h4>
+        <a href="/">Home</a>
+        <a href="/model">Model & Workflow</a>
+        <a href="/about">About</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 CardioAI · Not for clinical use</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

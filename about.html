@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — CardioAI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+      <span class="logo-text">Cardio<strong>AI</strong></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link"><i class="fa-solid fa-house-medical"></i> Home</a></li>
+      <li><a href="/model" class="nav-link"><i class="fa-solid fa-brain"></i> Model</a></li>
+      <li><a href="/about" class="nav-link active"><i class="fa-solid fa-circle-info"></i> About</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ── PAGE HERO ── -->
+<section class="page-hero">
+  <div class="page-hero-blob"></div>
+  <div class="container">
+    <div class="page-hero-badge"><i class="fa-solid fa-circle-info"></i> About the Project</div>
+    <h1 class="page-hero-title">CardioAI</h1>
+    <p class="page-hero-desc">An open-source cardiovascular health claim verification system powered by BioBERT and built for research, education, and clinical awareness.</p>
+  </div>
+</section>
+
+<!-- ── PROJECT OVERVIEW ── -->
+<section class="about-section">
+  <div class="container">
+    <div class="about-hero-grid">
+      <div class="about-text">
+        <div class="section-label"><i class="fa-solid fa-bullseye"></i> Mission</div>
+        <h2 class="section-title">Why CardioAI?</h2>
+        <p>Cardiovascular disease is the leading cause of death globally. Yet patients and caregivers are bombarded with conflicting, often misleading health claims — from social media posts to wellness blogs.</p>
+        <p style="margin-top:1rem;">CardioAI bridges the gap between raw health misinformation and evidence-based cardiology by providing an instant, AI-driven fact-check on cardiovascular claims.</p>
+        <div class="about-facts">
+          <div class="fact-item">
+            <span class="fact-num">17.9M</span>
+            <span class="fact-desc">CV disease deaths per year globally (WHO)</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-num">78%</span>
+            <span class="fact-desc">Of adults encounter health misinformation online</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-num">3x</span>
+            <span class="fact-desc">Faster decision-making with AI-assisted triage</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-card-stack">
+          <div class="about-mini-card true-card">
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+              <strong>True</strong>
+              <span>Supported by evidence</span>
+            </div>
+          </div>
+          <div class="about-mini-card false-card">
+            <i class="fa-solid fa-circle-xmark"></i>
+            <div>
+              <strong>False</strong>
+              <span>Contradicts research</span>
+            </div>
+          </div>
+          <div class="about-mini-card uncertain-card">
+            <i class="fa-solid fa-circle-question"></i>
+            <div>
+              <strong>Uncertain</strong>
+              <span>Mixed or emerging evidence</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="features-full-section">
+  <div class="container">
+    <div class="section-label"><i class="fa-solid fa-star"></i> Features</div>
+    <h2 class="section-title">What CardioAI Offers</h2>
+    <div class="features-big-grid">
+      <div class="feature-big-card">
+        <div class="fbig-icon"><i class="fa-solid fa-microphone"></i></div>
+        <h3>Voice + Text Input</h3>
+        <p>Submit claims by speaking or typing. The Web Speech API transcribes voice in real time without any third-party service.</p>
+      </div>
+      <div class="feature-big-card">
+        <div class="fbig-icon"><i class="fa-solid fa-stethoscope"></i></div>
+        <h3>Cardio-Domain Only</h3>
+        <p>Laser-focused on cardiovascular medicine. No general-medicine noise — just coronary disease, hypertension, cholesterol, lifestyle, and more.</p>
+      </div>
+      <div class="feature-big-card">
+        <div class="fbig-icon"><i class="fa-solid fa-gauge-high"></i></div>
+        <h3>Confidence Scores</h3>
+        <p>Each prediction comes with a calibrated confidence percentage so users know how certain the model is.</p>
+      </div>
+      <div class="feature-big-card">
+        <div class="fbig-icon"><i class="fa-solid fa-scroll"></i></div>
+        <h3>Plain-English Explanations</h3>
+        <p>Not just a label — the model returns a short, lay-friendly explanation of why a claim is true, false, or uncertain.</p>
+      </div>
+      <div class="feature-big-card">
+        <div class="fbig-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+        <h3>Fully Responsive UI</h3>
+        <p>Optimized for mobile, tablet, and desktop. The interface adapts seamlessly across all screen sizes.</p>
+      </div>
+      <div class="feature-big-card">
+        <div class="fbig-icon"><i class="fa-solid fa-plug"></i></div>
+        <h3>REST API</h3>
+        <p>Expose predictions via <code>/api/predict</code> — integrate CardioAI into any external app, dashboard, or chatbot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FUTURE IMPROVEMENTS ── -->
+<section class="future-section">
+  <div class="container">
+    <div class="section-label"><i class="fa-solid fa-rocket"></i> Roadmap</div>
+    <h2 class="section-title">Future Improvements</h2>
+    <div class="future-timeline">
+      <div class="ft-item">
+        <div class="ft-dot blue-dot"></div>
+        <div class="ft-content">
+          <h4>PubMed Citation Linking</h4>
+          <p>Automatically link the verdict to the most relevant PubMed papers supporting or refuting the claim.</p>
+        </div>
+      </div>
+      <div class="ft-item">
+        <div class="ft-dot teal-dot"></div>
+        <div class="ft-content">
+          <h4>Multi-language Support</h4>
+          <p>Extend to Spanish, French, Hindi, and Arabic using multilingual BioBERT variants.</p>
+        </div>
+      </div>
+      <div class="ft-item">
+        <div class="ft-dot purple-dot"></div>
+        <div class="ft-content">
+          <h4>EHR Integration</h4>
+          <p>Connect to FHIR-compliant Electronic Health Records for patient-context-aware predictions.</p>
+        </div>
+      </div>
+      <div class="ft-item">
+        <div class="ft-dot orange-dot"></div>
+        <div class="ft-content">
+          <h4>Larger Dataset (50K+)</h4>
+          <p>Scale training data using automated PubMed scraping and expert annotation pipelines.</p>
+        </div>
+      </div>
+      <div class="ft-item">
+        <div class="ft-dot green-dot"></div>
+        <div class="ft-content">
+          <h4>Explainability (SHAP/LIME)</h4>
+          <p>Highlight which words in the claim most influenced the prediction using token-level attribution.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-blob"></div>
+      <h2>Ready to verify a claim?</h2>
+      <p>Head to the home page and type or speak your cardiovascular health claim now.</p>
+      <a href="/" class="btn-cta">
+        <i class="fa-solid fa-heart-pulse"></i>
+        Try CardioAI
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+        <span class="logo-text">Cardio<strong>AI</strong></span>
+        <p>AI-powered cardiovascular claim verification.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Pages</h4>
+        <a href="/">Home</a>
+        <a href="/model">Model & Workflow</a>
+        <a href="/about">About</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 CardioAI · Not for clinical use</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

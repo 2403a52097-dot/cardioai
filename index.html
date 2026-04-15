@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CardioAI — Cardiovascular Health Checker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <span class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+      <span class="logo-text">Cardio<strong>AI</strong></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link active">
+        <i class="fa-solid fa-house-medical"></i> Home
+      </a></li>
+      <li><a href="/model" class="nav-link">
+        <i class="fa-solid fa-brain"></i> Model
+      </a></li>
+      <li><a href="/about" class="nav-link">
+        <i class="fa-solid fa-circle-info"></i> About
+      </a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════ -->
+<header class="hero">
+  <!-- animated background blobs -->
+  <div class="hero-blob blob-1"></div>
+  <div class="hero-blob blob-2"></div>
+  <div class="hero-blob blob-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <i class="fa-solid fa-shield-heart"></i>
+      AI-Powered · Cardiology-Focused
+    </div>
+    <h1 class="hero-title">
+      Cardio<span class="accent">AI</span><br />
+      <span class="hero-subtitle-text">Health Claim Checker</span>
+    </h1>
+    <p class="hero-desc">
+      Instantly verify cardiovascular health claims using our fine-tuned
+      <strong>BioBERT</strong> model. Speak or type — we'll tell you
+      what the evidence says.
+    </p>
+
+    <!-- ── STAT PILLS ── -->
+    <div class="hero-stats">
+      <div class="stat-pill">
+        <i class="fa-solid fa-database"></i>
+        <span>Cardio-Only Dataset</span>
+      </div>
+      <div class="stat-pill">
+        <i class="fa-solid fa-microchip"></i>
+        <span>BioBERT Model</span>
+      </div>
+      <div class="stat-pill">
+        <i class="fa-solid fa-bolt"></i>
+        <span>Real-Time Results</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="ecg-card">
+      <div class="ecg-header">
+        <span class="ecg-dot"></span>
+        <span>ECG — Live Monitoring</span>
+      </div>
+      <svg class="ecg-line" viewBox="0 0 320 80" preserveAspectRatio="none">
+        <polyline
+          fill="none"
+          stroke="url(#ecgGrad)"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          points="0,40 20,40 30,40 35,10 40,65 45,20 50,40 70,40 90,40 100,40 105,15 110,60 115,25 120,40 160,40 175,40 180,8 185,70 190,18 195,40 240,40 260,40 265,12 270,65 275,22 280,40 320,40"
+        />
+        <defs>
+          <linearGradient id="ecgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#00c6ff" />
+            <stop offset="100%" stop-color="#00e676" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="ecg-labels">
+        <span>Sinus Rhythm</span>
+        <span class="ecg-bpm"><i class="fa-solid fa-heart"></i> 72 BPM</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     INPUT SECTION
+══════════════════════════════════════ -->
+<section class="input-section">
+  <div class="container">
+    <div class="input-card">
+      <div class="input-card-header">
+        <i class="fa-solid fa-magnifying-glass-chart"></i>
+        <h2>Verify a Cardiovascular Claim</h2>
+        <p>Enter or speak a health claim related to the heart, blood pressure, cholesterol, or cardiovascular lifestyle.</p>
+      </div>
+
+      <!-- Text Input Area -->
+      <div class="textarea-wrapper">
+        <textarea
+          id="claimInput"
+          class="claim-textarea"
+          placeholder="e.g. 'Regular aerobic exercise reduces the risk of coronary artery disease…'"
+          rows="4"
+          maxlength="1000"
+        ></textarea>
+        <div class="textarea-footer">
+          <span class="char-count" id="charCount">0 / 1000</span>
+          <div class="example-chips">
+            <span class="chip-label">Try:</span>
+            <button class="example-chip" onclick="fillExample(this)" data-text="Regular aerobic exercise lowers the risk of heart disease.">Exercise & Heart</button>
+            <button class="example-chip" onclick="fillExample(this)" data-text="Drinking coffee every day causes heart attacks.">Coffee Myth</button>
+            <button class="example-chip" onclick="fillExample(this)" data-text="A Mediterranean diet may reduce cardiovascular mortality.">Mediterranean Diet</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-row">
+        <button class="btn-mic" id="micBtn" onclick="toggleVoice()" title="Voice Input">
+          <i class="fa-solid fa-microphone" id="micIcon"></i>
+          <span id="micLabel">Voice Input</span>
+        </button>
+        <button class="btn-clear" id="clearBtn" onclick="clearInput()" title="Clear">
+          <i class="fa-solid fa-xmark"></i>
+          <span>Clear</span>
+        </button>
+        <button class="btn-submit" id="submitBtn" onclick="submitClaim()">
+          <span class="btn-text">
+            <i class="fa-solid fa-stethoscope"></i>
+            Analyze Claim
+          </span>
+          <span class="btn-loader hidden">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Analyzing…
+          </span>
+        </button>
+      </div>
+
+      <!-- Voice Status Banner -->
+      <div class="voice-status hidden" id="voiceStatus">
+        <span class="voice-pulse"></span>
+        <span id="voiceText">Listening… speak your cardiovascular health claim.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     RESULT SECTION  (hidden until result)
+══════════════════════════════════════ -->
+<section class="result-section hidden" id="resultSection">
+  <div class="container">
+    <div class="result-card" id="resultCard">
+
+      <!-- Label Badge -->
+      <div class="result-badge-wrap">
+        <div class="result-badge" id="resultBadge">
+          <i class="result-icon" id="resultIcon"></i>
+          <span id="resultLabel">—</span>
+        </div>
+        <div class="result-confidence">
+          <span>Confidence</span>
+          <div class="confidence-bar-wrap">
+            <div class="confidence-bar" id="confidenceBar"></div>
+          </div>
+          <span class="confidence-pct" id="confidencePct">—</span>
+        </div>
+      </div>
+
+      <!-- Claim Echo -->
+      <div class="result-claim">
+        <span class="result-claim-label">
+          <i class="fa-solid fa-quote-left"></i> Analyzed Claim
+        </span>
+        <p id="resultClaim">—</p>
+      </div>
+
+      <!-- Explanation -->
+      <div class="result-explanation">
+        <div class="explanation-header">
+          <i class="fa-solid fa-lightbulb"></i>
+          <strong>AI Explanation</strong>
+        </div>
+        <p id="resultExplanation">—</p>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="result-disclaimer">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        This tool is for educational purposes only.
+      </div>
+
+      <!-- Re-analyze button -->
+      <button class="btn-reanalyze" onclick="resetForm()">
+        <i class="fa-solid fa-rotate-left"></i> Analyze Another Claim
+      </button>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FEATURES STRIP
+══════════════════════════════════════ -->
+<section class="features-strip">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-wrap teal">
+          <i class="fa-solid fa-microphone-lines"></i>
+        </div>
+        <h3>Voice Input</h3>
+        <p>Speak your claim using the Web Speech API — no typing required.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap blue">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <h3>BioBERT NLP</h3>
+        <p>Fine-tuned biomedical BERT model trained on a cardiology-specific dataset.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap green">
+          <i class="fa-solid fa-check-double"></i>
+        </div>
+        <h3>3-Class Output</h3>
+        <p>Clear True / False / Uncertain classification with confidence scores.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap purple">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3>Cardio-Focused</h3>
+        <p>Trained exclusively on cardiovascular medicine literature and guidelines.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></span>
+        <span class="logo-text">Cardio<strong>AI</strong></span>
+        <p>AI-powered cardiovascular claim verification for research and education.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Pages</h4>
+        <a href="/">Home</a>
+        <a href="/model">Model & Workflow</a>
+        <a href="/about">About</a>
+      </div>
+      <div class="footer-links">
+        <h4>Disclaimer</h4>
+        <p class="footer-disclaimer">Not a substitute for professional medical advice. For educational use only.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 CardioAI · Built with BioBERT + Flask · Not for clinical use</p>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
